@@ -83,11 +83,7 @@ int pid_count=0;
 proc=opendir(PROC_PATH);
 if(!proc) {
     perror("opendir");
-#ifdef __APPLE__
-    fprintf(stderr,"Can't open in Mac OS %s\n",PROC_PATH);
-#else
-    fprintf(stderr,"Can't open in Linux %s\n",PROC_PATH);
-#endif
+    fprintf(stderr,"Can't open %s\n",PROC_PATH);
     exit(EXIT_FAILURE);
 }
 
