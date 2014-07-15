@@ -63,6 +63,12 @@ while(*str) {
 return 1;
 }
 
+#ifdef __APPLE__
+int find_pids_by_binary_name(char *bin_name, pidinfo_t *pid_list, int max_pids)
+{
+    return 0;
+}
+#else
 int find_pids_by_binary_name(char *bin_name, pidinfo_t *pid_list, int max_pids)
 {
 DIR *proc;
@@ -77,7 +83,11 @@ int pid_count=0;
 proc=opendir(PROC_PATH);
 if(!proc) {
     perror("opendir");
-    fprintf(stderr,"Can't open %s\n",PROC_PATH);
+#ifdef __APPLE__
+    fprintf(stderr,"Can't open in Mac OS %s\n",PROC_PATH);
+#else
+    fprintf(stderr,"Can't open in Linux %s\n",PROC_PATH);
+#endif
     exit(EXIT_FAILURE);
 }
 
@@ -114,6 +124,7 @@ while((direntp = readdir(proc)) != NULL) {
 closedir(proc);
 return pid_count;
 }
+#endif
 
 int find_fd_for_pid(pid_t pid, int *fd_list, int max_fd)
 {
