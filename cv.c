@@ -34,7 +34,15 @@
 // for the BLKGETSIZE64 code section
 #include <fcntl.h>
 #include <sys/ioctl.h>
+#ifndef __APPLE__
 #include <linux/fs.h>
+#else
+#include <sys/disk.h>
+#endif
+
+#ifdef __APPLE__
+#define BLKGETSIZE64 DKIOCGETBLOCKCOUNT
+#endif
 
 #include "cv.h"
 #include "sizes.h"
